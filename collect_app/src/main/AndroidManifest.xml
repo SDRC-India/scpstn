@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+ Copyright (C) 2009 University of Washington Licensed under the Apache
+License, Version 2.0 (the "License"); you may not use this file except in
+compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES
+OR CONDITIONS OF ANY KIND, either express or implied. See the License for
+the specific language governing permissions and limitations under the License.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="org.sdrc.scpstn.collect.android">
+
+    <uses-feature
+        android:name="android.hardware.location"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.location.network"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.wifi"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <!-- Get permission for reliable local dispatching on non-Google Play devices. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+    <uses-feature android:name="android.hardware.screen.portrait"
+        android:required="false" />
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+    <!--  for Maps v2 functionality, want:
+    <uses-feature android:glEsVersion="0x00020000" android:required="false"/>
+    uses-feature android:glEsVersion="0x00020000" android:required="false"
+    BUT, the gl setting is not modified by the required parameter, so
+    do not declare anything here - detect capabilities at runtime.
+    -->
+
+    <permission
+        android:name="org.sdrc.scpstn.collect.android.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="org.sdrc.scpstn.collect.android.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:resizeable="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true" />
+
+    <application
+        android:name="org.sdrc.scpstn.collect.android.application.Collect"
+        android:icon="@mipmap/notes"
+        android:installLocation="auto"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:supportsRtl="true"
+        android:theme="@style/Collect">
+
+        <provider
+            android:name="org.sdrc.scpstn.collect.android.provider.FormsProvider"
+            android:authorities="org.sdrc.scpstn.collect.android.provider.odk.forms"
+            android:exported="true" />
+        <provider
+            android:name="org.sdrc.scpstn.collect.android.provider.InstanceProvider"
+            android:authorities="org.sdrc.scpstn.collect.android.provider.odk.instances"
+            android:exported="true" />
+
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.MainMenuActivity"
+            android:configChanges="locale|orientation|screenSize"
+            android:label="@string/app_name"/>
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.ScannerWithFlashlightActivity"
+            android:screenOrientation="portrait"
+            android:stateNotNeeded="true"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.FormEntryActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.EDIT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="vnd.android.cursor.item/vnd.odk.form" />
+                <data android:mimeType="vnd.android.cursor.item/vnd.odk.instance" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.NotificationActivity"
+            android:excludeFromRecents="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:taskAffinity="" />
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.DrawActivity"
+            android:screenOrientation="landscape"
+            android:label="@string/app_name" />
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.OpenSourceLicensesActivity"
+            android:label="@string/all_open_source_licenses" />
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.GoogleDriveActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.InstanceChooserList"
+            android:label="@string/app_name" />
+
+        <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+            <action android:name="android.intent.action.EDIT" />
+
+            <category android:name="android.intent.category.DEFAULT" />
+
+            <data android:mimeType="vnd.android.cursor.dir/vnd.odk.instance" />
+        </intent-filter>
+
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.FormChooserList"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.EDIT" />
+                <action android:name="android.intent.action.PICK" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="vnd.android.cursor.dir/vnd.odk.form" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.FormDownloadList"
+            android:label="@string/app_name" />
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.FileManagerTabs"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name" />
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.GoogleSheetsUploaderActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name" />
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.InstanceUploaderList"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.EDIT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.InstanceUploaderActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.preferences.AboutPreferencesActivity"
+            android:theme="@style/AppTheme.SettingsTheme"
+            android:label="@string/app_name" />
+        <activity android:name="org.sdrc.scpstn.collect.android.preferences.PreferencesActivity"
+            android:theme="@style/AppTheme.SettingsTheme"
+            android:label="@string/app_name" />
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.preferences.AdminPreferencesActivity"
+            android:theme="@style/AppTheme.SettingsTheme"
+            android:label="@string/app_name" />
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.FormHierarchyActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.GeoPointActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.GeoPointMapActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.GeoPointOsmMapActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.GeoShapeOsmMapActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.GeoShapeGoogleMapActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.GeoTraceOsmMapActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.GeoTraceGoogleMapActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name" />
+
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.BearingActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.SplashScreenActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Dialog">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.LoginActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.ProgramsActivity"
+            android:configChanges="orientation"
+            android:label="Programs" >
+        </activity>
+        <!-- Enable Shortcuts for Command Actions -->
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.AndroidShortcuts"
+            android:label="SCPS TN Form"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.CaptureSelfieActivity" />
+        <activity
+            android:name="org.sdrc.scpstn.collect.android.activities.CaptureSelfieActivityNewApi" />
+        <receiver
+            android:name="org.sdrc.scpstn.collect.android.receivers.NetworkReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="org.sdrc.scpstn.collect.android.FormSaved" />
+            </intent-filter>
+        </receiver>
+        <!-- Register AnalyticsReceiver and AnalyticsService to support background
+        dispatching on non-Google Play devices. -->
+        <receiver
+            android:name="com.google.android.gms.analytics.AnalyticsReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="com.google.android.gms.analytics.AnalyticsService"
+            android:enabled="true"
+            android:exported="false" />
+        <!-- ... -->
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBS-JQ-dnaZ_8qsbvSyr_I3rTPFd5fJsYI" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"
+            tools:replace="android:value" />  <!-- integer/google_play_services_version -->
+
+        <uses-library
+            android:name="com.google.android.maps"
+            android:required="false" />
+
+    </application>
+
+</manifest>
